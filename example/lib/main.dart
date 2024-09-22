@@ -109,6 +109,7 @@ class _HomeState extends State<Home> {
           FloatingSearchBar(
         automaticallyImplyBackButton: false,
         controller: controller,
+        bottomWidget: Text('hi'),
         hint: 'חיפוש...',
         iconColor: Colors.grey,
         transitionDuration: const Duration(milliseconds: 800),
@@ -255,7 +256,7 @@ class _HomeState extends State<Home> {
       selectedFontSize: 11.5,
       unselectedFontSize: 11.5,
       unselectedItemColor: const Color(0xFF4d4d4d),
-      items: const <BottomNavigationBarItem>[
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(MdiIcons.homeVariantOutline),
           label: 'Explore',
@@ -366,6 +367,7 @@ class _SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FloatingSearchBar(
+        bottomWidget: Text('hello'),
         contextMenuBuilder:
             (BuildContext context, EditableTextState editableTextState) {
           final List<ContextMenuButtonItem> buttonItems =

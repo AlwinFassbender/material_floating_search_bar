@@ -36,6 +36,7 @@ class FloatingSearchBar extends ImplicitlyAnimatedWidget {
     this.backdropColor,
     this.margins,
     this.padding,
+    this.bottomWidget,
     this.insets,
     this.height = 48.0,
     this.elevation = 4.0,
@@ -264,6 +265,11 @@ class FloatingSearchBar extends ImplicitlyAnimatedWidget {
   /// `FloatingSearchBar` is closed.
   /// {@endtemplate}
   final Widget? title;
+
+  /// {@template floating_search_bar.bottomWidget}
+  /// A widget that is shown under the [TextField] like tabs or a bottom bar.
+  /// {@endtemplate}
+  final Widget? bottomWidget;
 
   /// {@template floating_search_bar.hint}
   /// The text value of the hint of the [TextField].
@@ -666,33 +672,40 @@ class FloatingSearchBarState extends ImplicitlyAnimatedWidgetState<
       focused: isOpen,
       child: Padding(
         padding: transition.lerpMargin(),
-        child: AnimatedBuilder(
-          animation: CurvedAnimation(
-            parent: _translateAnimation,
-            curve: const Interval(0.95, 1.0),
-          ),
-          builder: (BuildContext context, Widget? child) => Material(
-            elevation: transition.lerpElevation() *
-                (1.0 - interval(0.95, 1.0, _translateAnimation.value)),
-            shadowColor: style.shadowColor,
-            borderRadius: borderRadius,
-            child: child,
-          ),
-          child: Container(
-            width: transition.lerpWidth(),
-            height: transition.lerpHeight(),
-            padding: EdgeInsets.only(top: padding.top, bottom: padding.bottom),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: transition.lerpBackgroundColor(),
-              border: Border.fromBorderSide(style.border),
-              borderRadius: borderRadius,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            AnimatedBuilder(
+              animation: CurvedAnimation(
+                parent: _translateAnimation,
+                curve: const Interval(0.95, 1.0),
+              ),
+              builder: (BuildContext context, Widget? child) => Material(
+                elevation: transition.lerpElevation() *
+                    (1.0 - interval(0.95, 1.0, _translateAnimation.value)),
+                shadowColor: style.shadowColor,
+                borderRadius: borderRadius,
+                child: child,
+              ),
+              child: Container(
+                width: transition.lerpWidth(),
+                height: transition.lerpHeight(),
+                padding:
+                    EdgeInsets.only(top: padding.top, bottom: padding.bottom),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: transition.lerpBackgroundColor(),
+                  border: Border.fromBorderSide(style.border),
+                  borderRadius: borderRadius,
+                ),
+                child: ClipRRect(
+                  borderRadius: borderRadius,
+                  child: _buildInnerBar(),
+                ),
+              ),
             ),
-            child: ClipRRect(
-              borderRadius: borderRadius,
-              child: _buildInnerBar(),
-            ),
-          ),
+            widget.bottomWidget ?? const SizedBox(height: 0),
+          ],
         ),
       ),
     );

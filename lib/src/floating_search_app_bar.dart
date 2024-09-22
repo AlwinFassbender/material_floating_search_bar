@@ -410,6 +410,7 @@ class FloatingSearchAppBarState extends ImplicitlyAnimatedWidgetState<
 
   @override
   Widget build(BuildContext context) {
+    
     if (isAppBar) {
       return _buildAppBar();
     } else {
